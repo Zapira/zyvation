@@ -2,11 +2,30 @@ import axios from "axios";
 import { Route, Routes, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Testing from "../pages/templates/testing";
+import Login from "../pages/auth/login";
+import PrivateRoot from "../libs/privateRoot";
+import Loader from "../components/ui/loader";
+import api from "../api/interceptor";
 
 export default function RouteApp() {
+    const [isAuth, setIsAuth] = useState(null);
+
+    useEffect(() => {
+        api.get('/auth/check')
+            .then(() => setIsAuth(true))
+            .catch(() => setIsAuth(false));
+    }, []);
+
+    if (isAuth === null) {
+        return <Loader />;
+    }
+
     return (
         <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/template/:slug" element={<DynamicTemplate />} />
+            <Route path="/" element={<PrivateRoot isAuth={isAuth}><div>Home Page</div></PrivateRoot>} />
+            <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
     );
 }
