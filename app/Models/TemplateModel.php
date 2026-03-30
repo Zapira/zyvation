@@ -13,6 +13,7 @@ class TemplateModel extends Model
     protected $table = 'tb_template';
     protected $fillable = [
         'name_template',
+        'slug_template',
         'thumbnail',
         'is_active',
     ];

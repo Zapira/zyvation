@@ -8,6 +8,7 @@ use App\Interfaces\TemplateInterfaces;
 use App\Models\TemplateModel;
 use Illuminate\Http\Request;
 use MRizki28\ApiResponse\ApiResponse;
+use Illuminate\Support\Str;
 
 class TemplateRepository implements TemplateInterfaces
 {
@@ -18,7 +19,10 @@ class TemplateRepository implements TemplateInterfaces
         $this->templateModel = $templateModel;
     }
 
-    public function getAllTemplate(Request $request) {}
+    public function getAllTemplate(Request $request) {
+        $data = $this->templateModel->get();
+        return ApiResponse::success($data, 'Get all template successfully');
+    }
 
     public function createTemplate(TemplateRequest $request)
     {
@@ -26,6 +30,7 @@ class TemplateRepository implements TemplateInterfaces
         try {
             $data = new $this->templateModel();
             $data->name_template = $request->input('name_template');
+            $data->slug_template = Str::slug($request->input('name_template'));
             $data->is_active = $request->input('is_active', false);
             if ($request->hasFile('thumbnail')) {
                 $filePath = UploadFileHelper::uploadFile($request->file('thumbnail'), 'uploads/template/');

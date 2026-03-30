@@ -12,6 +12,7 @@ Route::fallback(function () {
 
 Route::prefix('v1')->group(function () {
     Route::prefix('template')->controller(TemplateController::class)->group(function () {
+        Route::get('/', 'getAllTemplate');
         Route::post('create', 'createTemplate');
     });
 });

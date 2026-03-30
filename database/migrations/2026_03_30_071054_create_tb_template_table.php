@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tb_template', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name_template');
+            $table->string('slug_template')->unique();
             $table->string('thumbnail');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
