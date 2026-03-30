@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CMS\TemplateController;
 use Illuminate\Support\Facades\Route;
 
 Route::fallback(function () {
@@ -7,4 +8,10 @@ Route::fallback(function () {
         abort(404);
     }
     return view('app');
+});
+
+Route::prefix('v1')->group(function () {
+    Route::prefix('template')->controller(TemplateController::class)->group(function () {
+        Route::post('create', 'createTemplate');
+    });
 });
