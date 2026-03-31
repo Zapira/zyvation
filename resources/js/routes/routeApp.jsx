@@ -6,6 +6,7 @@ import Login from "../pages/auth/login";
 import PrivateRoot from "../libs/privateRoot";
 import Loader from "../components/ui/loader";
 import api from "../api/interceptor";
+import Register from "../pages/auth/register";
 
 export default function RouteApp() {
     const [isAuth, setIsAuth] = useState(null);
@@ -23,6 +24,7 @@ export default function RouteApp() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/template/:slug" element={<DynamicTemplate />} />
             <Route path="/" element={<PrivateRoot isAuth={isAuth}><div>Home Page</div></PrivateRoot>} />
             <Route path="*" element={<div>Page Not Found</div>} />
