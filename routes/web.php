@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CMS\AuthController;
 use App\Http\Controllers\CMS\TemplateController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +11,13 @@ Route::fallback(function () {
     return view('app');
 });
 
+
 Route::prefix('v1')->group(function () {
+    Route::prefix('auth')->controller(AuthController::class)->group(function () {
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+    });
+
     Route::prefix('template')->controller(TemplateController::class)->group(function () {
         Route::get('/', 'getAllTemplate');
         Route::post('create', 'createTemplate');
