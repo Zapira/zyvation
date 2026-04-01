@@ -12,7 +12,7 @@ export default function RouteApp() {
     const [isAuth, setIsAuth] = useState(null);
 
     useEffect(() => {
-        api.get('/auth/check')
+        api.get('/auth/checking')
             .then(() => setIsAuth(true))
             .catch(() => setIsAuth(false));
     }, []);
