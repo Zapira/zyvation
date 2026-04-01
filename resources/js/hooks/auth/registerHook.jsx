@@ -1,7 +1,7 @@
 import { set, useForm } from "react-hook-form";
-import { RegisterService } from "../../services/auth/registerService";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { AuthService } from "../../services/auth/authService";
 
 export function RegisterHook() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -13,8 +13,16 @@ export function RegisterHook() {
         setLoading(true);
         try {
             const payload = data;
-            const response = await RegisterService(payload);
-            console.log(response);
+            const response = await AuthService.register(payload);
+            if(response.data.status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pendaftaran Berhasil',
+                    text: 'Silakan masuk ke akun Anda.',
+                }).then(() => {
+                    window.location.href = "/login";
+                });
+            }
         } catch (error) {
             console.error(error.response);
             setLoading(false);
