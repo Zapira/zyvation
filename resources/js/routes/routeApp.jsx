@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Route, Routes, useParams } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Testing from "../pages/templates/testing";
 import Login from "../pages/auth/login";
@@ -7,6 +7,7 @@ import PrivateRoot from "../libs/privateRoot";
 import Loader from "../components/ui/loader";
 import api from "../api/interceptor";
 import Register from "../pages/auth/register";
+import Dashboard from "../pages/dashboard/dashboard";
 
 export default function RouteApp() {
     const [isAuth, setIsAuth] = useState(null);
@@ -23,10 +24,16 @@ export default function RouteApp() {
 
     return (
         <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+                path="/login"
+                element={isAuth ? <Navigate to="/" replace /> : <Login/>}
+            />
+            <Route
+                path="/register"
+                element={isAuth ? <Navigate to="/" replace /> : <Register/>}
+            />
             <Route path="/template/:slug" element={<DynamicTemplate />} />
-            <Route path="/" element={<PrivateRoot isAuth={isAuth}><div>Home Page</div></PrivateRoot>} />
+            <Route path="/" element={<PrivateRoot isAuth={isAuth}><Dashboard /></PrivateRoot>} />
             <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
     );
