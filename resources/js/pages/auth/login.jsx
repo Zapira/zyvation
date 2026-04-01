@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import LoginHook from "../../hooks/auth/loginHook";
 
 export default function Login() {
+    const { register, handleSubmit, errors, onSubmit, onError, loading } = LoginHook();
     return (
         <div className="min-h-screen flex items-center justify-center ">
             <div className="w-full p-2 max-w-4xl mx-auto">
@@ -58,17 +60,19 @@ export default function Login() {
                             Belum punya akun? <Link to="/register" className="text-[#4F46E5] hover:underline">Daftar Gratis</Link>
                         </p>
 
-                        <form >
+                        <form onSubmit={handleSubmit(onSubmit,onError)}>
                             <div className="mt-4">
                                 <label className="text-xs font-bold text-gray-700">Alamat Email</label>
                                 <input type="email"
-                                    className="w-full mt-1 px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                                    {...register("email", { required: "Email wajib diisi" })}
+                                    className={`w-full mt-1 px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? 'border-red-500' : ''}`}
                                     placeholder="nama@email.com" />
                             </div>
                             <div className="mt-4">
                                 <label className="text-xs font-bold text-gray-700">Kata Sandi</label>
                                 <input type="password"
-                                    className="w-full mt-1 px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                                    {...register("password", { required: "Kata sandi wajib diisi" })}
+                                    className={`w-full mt-1 px-4 py-2 text-sm rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : ''}`}    
                                     placeholder="••••••••" />
                             </div>
 
@@ -80,7 +84,13 @@ export default function Login() {
                                 className="w-full mt-4 py-3 rounded-lg font-bold text-sm text-white 
                             bg-linear-to-r from-blue-500 to-blue-700 cursor-pointer
                             shadow-lg shadow-blue-500/30 hover:opacity-90 transition">
-                                Masuk Sekarang
+                                {loading ? <span className="flex items-center justify-center">
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Memproses...
+                                </span> : 'Masuk Sekarang'}
                             </button>
 
                             <p className="text-center text-xs text-gray-400 mt-4">
