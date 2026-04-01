@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <title>Zyvation</title>
 </head>
-<body>
+<body style="background-color: #E2E2E2">
     @viteReactRefresh
     @vite(['resources/js/index.jsx'])
     <div id="app"></div>
