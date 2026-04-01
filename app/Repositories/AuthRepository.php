@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Interfaces\AuthInterfaces;
 use App\Models\User;
 use MRizki28\ApiResponse\ApiResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthRepository implements AuthInterfaces
 {
@@ -33,5 +34,18 @@ class AuthRepository implements AuthInterfaces
         }
     }
 
-    public function login(LoginRequest $request) {}
+    public function login(LoginRequest $request) {
+        try {
+            $credencial = $request->only(['email', 'password']);
+            if (!Auth::attempt($credencial)) {
+                return ApiResponse::unauthorized();
+            }
+
+            $user = $this->userModel->where('email', $request->email)->first();
+            $request->session()->regenerate();
+            return ApiResponse::success(['user' => $user], 'Login successful', 200);
+        } catch (\Throwable $th) {
+            return ApiResponse::error($th);
+        }
+    }
 }
