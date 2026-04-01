@@ -23,3 +23,11 @@ Route::prefix('v1')->group(function () {
         Route::post('create', 'createTemplate');
     });
 });
+
+Route::middleware('auth', 'web')->group(function () {
+    Route::prefix('v1')->group(function () {
+        Route::get('auth/checking', function () {
+            return response()->json(['message' => 'Authenticated']);
+        });
+    });
+});
